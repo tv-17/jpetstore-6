@@ -1,11 +1,11 @@
 node {
-    stage "Build"
-    git 'https://github.com/tv-17/jpetstore-6.git'
-    sh "mvn clean package"
+        stage "Build"
+        git branch: 'cicd', url: 'https://github.com/tv-17/jpetstore-6.git'
+        sh 'export PATH=/opt/maven/bin:${PATH} && mvn clean package'
 
-    stage "Integration Test"
-    sh "mvn cargo:run -P tomcat85 2>&1 > /dev/null"
+        stage "Integration Test"
+        sh "export PATH=/opt/maven/bin:${PATH} && nohup mvn cargo:run -P tomcat85 2>&1 > /dev/null &"
 
-    stage "User Accepted Test"
-    sh "python test/integration_test.py"
+        stage "User Acceptance Test"
+        sh "scl enable python27 bash && python test/user_acceptance_tests.py"
 }
