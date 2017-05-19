@@ -7,7 +7,7 @@ node {
 
         stage "Integration Test"
         sh "export PATH=/opt/maven/bin:${PATH} && nohup mvn cargo:run -P tomcat85 2>&1 > /dev/null &"
-        sh "echo $! > save_pid.txt"
+        sh "echo \$! > save_pid.txt"
 
         stage "User Acceptance Test"
         sh 'sleep 10'
