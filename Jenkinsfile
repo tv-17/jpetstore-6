@@ -9,7 +9,5 @@ node {
         sh 'chmod +x pipeline-helper-scripts/integration_stage.sh && ./pipeline-helper-scripts/integration_stage.sh'
 
         stage "User Acceptance Test"
-        sh 'sleep 10'
-        sh 'scl enable python27 bash && python test/user_acceptance_tests.py'
-        sh 'kill -9 `cat save_pid.txt`'
+        sh 'chmod +x pipeline-helper-scripts/user_acceptance_stage.sh && ./pipeline-helper-scripts/user_acceptance_stage.sh'
 }
