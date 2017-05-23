@@ -5,9 +5,16 @@ node {
         git branch: 'cicd', url: 'https://github.com/tv-17/jpetstore-6.git'
         sh 'export PATH=/opt/maven/bin:${PATH} && mvn clean package'
 
+        stage('SonarQube analysis') {
+            withSonarQubeEnv('SQ') {
+              sh "/etc/sonar-scanner-3.0.3.778-linux/bin/sonar-scanner"
+            }
+        }
+
         stage "Integration Test"
         sh 'chmod +x pipeline-helper-scripts/integration_stage.sh && ./pipeline-helper-scripts/integration_stage.sh'
 
         stage "User Acceptance Test"
         sh 'chmod +x pipeline-helper-scripts/user_acceptance_stage.sh && ./pipeline-helper-scripts/user_acceptance_stage.sh'
+
 }
