@@ -1,7 +1,10 @@
 node {
         step([$class: 'WsCleanup'])
-
+      
         stage "Build"
+
+        docker.withRegistry('https://hub.docker.com', '3fd5eadf-0bbf-4d9b-bf01-8922a5425f99')
+
         git branch: 'cicd', credentialsId: '7a2ccb12-d4dc-4354-a85e-9535cda95de3', url: 'git@github.ecs-digital.co.uk:ECSD/cicd-pipeline-demo.git'
         sh 'export PATH=/opt/maven/bin:${PATH} && mvn clean package'
 
@@ -18,5 +21,8 @@ node {
         sh 'chmod +x pipeline-helper-scripts/user_acceptance_stage.sh && ./pipeline-helper-scripts/user_acceptance_stage.sh'
 
         stage "Build Docker Image"
-        def app = docker.build "web-app-jpetstore6"d
+        def app = docker.build "thiv17/jpetstore6:${env.BUILD_NUMBER}"
+
+        stage "Publish"
+          app.push();
 }
