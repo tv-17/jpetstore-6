@@ -17,4 +17,6 @@ node {
         stage "User Acceptance Test"
         sh 'chmod +x pipeline-helper-scripts/user_acceptance_stage.sh && ./pipeline-helper-scripts/user_acceptance_stage.sh'
 
+        stage "Build Docker Image"
+        def app = docker.build "web-app-jpetstore6"
 }
