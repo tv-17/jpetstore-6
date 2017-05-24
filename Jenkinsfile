@@ -2,7 +2,7 @@ node {
         step([$class: 'WsCleanup'])
 
         stage "Build"
-        git branch: 'cicd', url: 'https://github.ecs-digital.co.uk/ECSD/cicd-pipeline-demo.git'
+        git branch: 'cicd', credentialsId: '7a2ccb12-d4dc-4354-a85e-9535cda95de3', url: 'git@github.ecs-digital.co.uk:ECSD/cicd-pipeline-demo.git'
         sh 'export PATH=/opt/maven/bin:${PATH} && mvn clean package'
 
         stage('SonarQube analysis') {
