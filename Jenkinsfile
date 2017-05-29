@@ -3,8 +3,6 @@ node {
       
         stage "Build"
 
-        docker.withRegistry('https://hub.docker.com', '3fd5eadf-0bbf-4d9b-bf01-8922a5425f99')
-
         git branch: 'cicd', credentialsId: '7a2ccb12-d4dc-4354-a85e-9535cda95de3', url: 'git@github.ecs-digital.co.uk:ECSD/cicd-pipeline-demo.git'
         sh 'export PATH=/opt/maven/bin:${PATH} && mvn clean package'
 
@@ -22,7 +20,9 @@ node {
 
         stage "Build Docker Image"
         def app = docker.build "thiv17/jpetstore6:${env.BUILD_NUMBER}"
-
-        stage "Publish"
-          app.push();
+        
+        docker.withRegistry('https://index.docker.io/v1/', '3fd5eadf-0bbf-4d9b-bf01-8922a5425f99') {
+          stage "Publish"
+            app.push();
+        }
 }
